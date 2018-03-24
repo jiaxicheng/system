@@ -5,6 +5,7 @@ After=ssh.service
 [Service]
 Type=forking
 ExecStart=/usr/bin/ssh -fN -F %h/.ssh/config-%i %i
+Restart=always
 
 [Install]
 WantedBy=default.target
