@@ -1,6 +1,6 @@
 [Unit]
 Description=VNC Server Service
-After=network.target
+After=sddm.service
 
 [Service]
 Type=forking
