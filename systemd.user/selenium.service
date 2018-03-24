@@ -1,0 +1,11 @@
+[Unit]
+Description=Selenium Service
+After=network.target
+
+[Service]
+Environment="DISPLAY=:0"
+ExecStart=/bin/bash -c "cd %h/selenium; java -jar selenium-server-standalone-3.10.0.jar >s1.log 2>&1"
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
