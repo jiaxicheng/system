@@ -1,0 +1,13 @@
+[Unit]
+Description=VNC Server Service
+After=network.target
+
+[Service]
+Type=forking
+ExecStartPre=/bin/rm -rf /tmp/.X11-unix/X%i
+ExecStart=/usr/bin/vncserver :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=default.target
+

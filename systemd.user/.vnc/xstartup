@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+vncconfig -display :72 -nowin &
+
+# KDE
+startkde &
+
+# Gnome
+# unset SESSION_MANAGER
+# exec /etc/X11/xinit/xinitrc
+
