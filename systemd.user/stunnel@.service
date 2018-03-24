@@ -1,0 +1,10 @@
+[Unit]
+Description=SSH Tunnel Service
+After=ssh.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/ssh -fN -F %h/.ssh/config-%i %i
+
+[Install]
+WantedBy=default.target
