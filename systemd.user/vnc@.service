@@ -1,6 +1,7 @@
 [Unit]
 Description=VNC Server Service
-After=sddm.service
+# the below line is not useful when running systemd user service
+#After=sddm.service
 
 [Service]
 Type=forking

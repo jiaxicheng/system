@@ -1,10 +1,10 @@
 [Unit]
 Description=SSH Tunnel Service
-After=systemd-networkd.service
+#After=systemd-networkd.service
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/ssh -fN -F %h/.ssh/config-%i %i
+ExecStart=/usr/bin/ssh -fN -F %h/.ssh/config-%i %u@%i
 Restart=always
 
 [Install]

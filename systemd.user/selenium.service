@@ -1,6 +1,5 @@
 [Unit]
 Description=Selenium Service
-After=systemd-networkd.service
 
 [Service]
 Environment="DISPLAY=:0"
