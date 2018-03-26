@@ -19,7 +19,9 @@ default.target
 **__Note:__** When setting up the systemd system services, you will need to do the similar command with `systemctl list-dependencies` to check the exact order and hierachy you need.
 
 For more examples, check the following folders for `user` and `system` subfolders: 
-Centos 7: /usr/lib/systemd
-Ubuntu 17.10: /lib/systemd
-
+```
+---
+- Centos 7: /usr/lib/systemd
+- Ubuntu 17.10: /lib/systemd
+```
 
