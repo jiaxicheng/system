@@ -20,7 +20,6 @@ default.target
 
 For more examples, check the following folders for `user` and `system` subfolders: 
 ```
----
 - Centos 7: /usr/lib/systemd
 - Ubuntu 17.10: /lib/systemd
 ```
