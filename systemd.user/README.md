@@ -27,7 +27,7 @@ systemctl --user status stunnel@madison
 
 __NOTE__: the extension .service can be ignored when running the above command lines.
 
-**How to select After= and Wantedby=**
+### How to select After= and Wantedby= ###
 
 For most systemd user services, you can just use *Wantedby=default.target* and leave out the *After=* directive unless you need a specific boot-start order among your own user services. you can run the following command to check what targets, services etc: 
 
