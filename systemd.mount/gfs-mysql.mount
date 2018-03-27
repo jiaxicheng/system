@@ -1,0 +1,11 @@
+[Unit]
+Description=Gluster File System
+#Before=docker.service
+After=network-online.target
+
+[Mount]
+What=cedarhurst:/mysqldata
+Where=/gfs/mysql
+Type=glusterfs
+Options=defaults
+DirectoryMode=0770
