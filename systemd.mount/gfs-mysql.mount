@@ -1,6 +1,6 @@
 [Unit]
 Description=Gluster File System
-#Before=docker.service
+Before=docker.service
 After=network-online.target
 
 [Mount]
@@ -9,3 +9,6 @@ Where=/gfs/mysql
 Type=glusterfs
 Options=defaults
 DirectoryMode=0770
+
+[Install]
+WantedBy=multi-user.target
