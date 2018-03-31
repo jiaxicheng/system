@@ -1,0 +1,28 @@
+# The vncserver system unit file
+# Note, the name of the PIDFile is very important for this unit file to work
+# No need to define ExecStop, the Stop of this service rely on thie PIDFile
+# Make sure keep the name of this PIDFile in $HOME/.vnc/<host>:<display#>.pid
+# Tested Environment: 
+#   + Centos 7.3.1611 x86_64 
+#   + tigervnc-1.3.1-9.el7.x86_64
+# Usage:
+#   systemctl enable vnc@24
+#   systemctl start vnc@24
+#   systemctl status vnc@24
+#   systemctl -t service | awk 'NR==1||/vnc/'
+
+[Unit]
+Description=Remote desktop service (VNC)
+Documentation=https://github.com/TigerVNC/tigervnc/blob/master/contrib/packages/rpm/el7/SOURCES/vncserver.service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+# Clean any existing files in /tmp/.X11-unix and the lock file
+ExecStartPre=/bin/sh -c '/bin/rm -rf /tmp/.X11-unix/X%i /tmp/.X%i-lock >/dev/null 2>&1 || :'
+ExecStart=/sbin/runuser -l xicheng -c "/usr/bin/vncserver :%i"
+PIDFile=/home/xicheng/.vnc/%H:%i.pid
+
+[Install]
+WantedBy=default.target
