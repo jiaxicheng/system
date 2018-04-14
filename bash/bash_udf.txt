@@ -1,0 +1,14 @@
+# .bashrc 
+# user-defined bash functions in $HOME/.bashrc
+# XiCheng Jia @ New York 
+
+# function to check if a port on host is open/accessible, need netcat: sudo yum install nc
+n1() { nc -w1 ${2:-localhost} ${1:?"Usage: n1 port host"} </dev/null >/dev/null 2>&1 && echo "success($?)" || echo "failure($?)"; }
+
+# check process based on its pid
+p1() { ps np ${1:?"Usage: p1 <pid>"} | more; }
+
+# export man page into pdf file
+pdfman() { man -t ${1?Usage: $0 command} | ps2pdf - $1.pdf; }
+
+
