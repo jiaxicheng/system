@@ -1,4 +1,4 @@
-## awk to search texts by rotation not marching##
+## awk to search texts by rotation not marching ##
 REF: [https://stackoverflow.com/questions/50054149/accurate-awk-array-searching](https://stackoverflow.com/questions/50054149/accurate-awk-array-searching)
 
 Target text: `AAAAAHHHAAHH`
