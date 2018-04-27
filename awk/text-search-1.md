@@ -1,0 +1,45 @@
+awk to do test search: 
+REF: [https://stackoverflow.com/questions/50054149/accurate-awk-array-searching](https://stackoverflow.com/questions/50054149/accurate-awk-array-searching)
+target text: 'AAAAAHHHAAHH'
+search sub-strings and expected result:
+```
++-----+---+
+| AA  | 5 |
+| HH  | 3 |
+| AAA | 3 |
+| HHH | 1 |
+| AAH | 2 |
+| HHA | 1 |
++-----+---+
+```
+awk solution:
+```
+$ awk '{ x="AAAAAHHHAAHH"; n=0 }{
+    while(t=index(x,$0)){ n++; x=substr(x,t+1) } 
+    print $0,n
+}' combinations.txt 
+AA 5
+HH 3
+AAA 3
+HHH 1
+AAH 2
+HHA 1
+```
+
+How it works:
++ use index() to search the substring `$0` from the string `x` and then return the position 
+  of the first chars to `t`. 
++ index() will return zero when no match is found, thus quits the `while` loop
++ the original string `x` will then delete all chars before the matching point (includive)
+  in `x = substr(x, t+1)`
++ `n++` to increment the number of occurances for the matching substring `$0`
+
+```
+$ cat combinations.txt
+AA
+HH
+AAA
+HHH
+AAH
+HHA
+```
