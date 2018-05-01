@@ -15,7 +15,14 @@ Search the following sub-strings and expected result:
 ```
 awk solution:
 ```
-$ awk '{ x="AAAAAHHHAAHH"; n=0 }{
+$ echo 'AA
+HH
+AAA
+HHH
+AAH
+HHA'> combinations.txt
+
+$ awk '{ x="AAAAAHHHAAHH"; n=0 }$0 != ""{
     while(t=index(x,$0)){ n++; x=substr(x,t+1) } 
     print $0,n
 }' combinations.txt 
@@ -34,13 +41,4 @@ How it works:
 + the original string `x` will then delete all chars before the matching point (including the 
   first char) by `x = substr(x, t+1)`
 + `n++` to increment the number of occurances for the matching substring `$0`
-
-```
-$ cat combinations.txt
-AA
-HH
-AAA
-HHH
-AAH
-HHA
-```
++ `$0 != ""` befoer the main while block is to skip empty string which will make a infinit loop.
