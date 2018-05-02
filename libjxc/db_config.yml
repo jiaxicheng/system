@@ -1,0 +1,19 @@
+---
+'my_db_link':
+  user: xicheng
+  password: '$password'
+  database: information_schema
+  host: 127.0.0.1
+  port: '3305'
+'master_db:3306':
+  user: xicheng
+  password: 'mypassword'
+  database: information_schema
+  host: 192.168.1.100
+  port: '3306'
+'xc_mysql:3306':
+  user: xicheng
+  password: 'myexamplepassword'
+  database: mydbname
+  host: xc_mysql
+  port: '3306'
