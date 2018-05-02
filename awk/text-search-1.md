@@ -1,5 +1,5 @@
 ## awk to search texts by rotation not marching ##
-REF: [https://stackoverflow.com/questions/50054149/accurate-awk-array-searching](https://stackoverflow.com/questions/50054149/accurate-awk-array-searching)
+REF: [https://stackoverflow.com/questions/50054149/accurate-awk-array-searching](https://stackoverflow.com/questions/50053094/bash-search-a-string-and-exactly-display-the-exact-number-of-times-a-substring/50065272#50065272)
 
 Target text: `AAAAAHHHAAHH`
 Search the following sub-strings and expected result:
