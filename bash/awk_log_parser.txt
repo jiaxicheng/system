@@ -1,0 +1,17 @@
+REF: https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html
+
+Gawk now supports using regex patterns to define fields by using a built-in variable: FPAT
+
+this will be very useful in parsing Apache HTTP log when fields like request_uri, user_agent are quoted 
+by double-quotes.
+
+    awk -v FPAT='[^[:space:]]+|"[^"]*"' '{print $6}' access_log
+
+below a line in access_log,
+::1 - - [04/Mar/2019:03:44:01 -0500] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.6 (CentOS) (internal dummy connection)"
+
+print $6 will yield:
+
+    "OPTIONS * HTTP/1.0"
+
+This built-in makes it much easier to parse Apache log. 
