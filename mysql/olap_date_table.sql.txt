@@ -1,0 +1,89 @@
+/*
+ * Create Date Table used for BI projects
+ * triggers are used so that only `date` column is required to update the table
+ * below lists the steps to take:
+   (1) run the following command to generate a list of date into the file: /tmp/olap_date_table.dat:
+
+start_date="2007-01-01"
+end_date="2027-01-01"
+while [ "$start_date" != "$end_date" ]; do  
+    echo $start_date 
+    start_date=$(date -d"$start_date +1 day" +%F)
+done > /tmp/olap_date_table.dat
+
+   (2) create warehouse.olap_date_table table (this file: olap_date_table.sql)
+
+mysql -h192.168.1.38 -uxicheng -p warehouse < olap_date_table.sql.txt
+
+   (3) import date into this table:
+
+mysqlimport -cdate -L -h192.168.1.38 -uxicheng -p warehouse /tmp/olap_date_table.dat
+
+ *
+ */
+
+DROP TABLE IF EXISTS `olap_date_table`;
+CREATE TABLE `olap_date_table` (
+  `date` date NOT NULL PRIMARY KEY,
+  `year` year(4),
+  `month_of_year` tinyint(4),
+  `month_short_name` enum('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),
+  `month_name` enum('January','February','March','April','May','June','July','August','September','October','November','December'),
+  `year_month` int(11),
+  `day_of_month` tinyint(4),
+  `day_of_year` smallint(6),
+  `quarter` tinyint(4),
+  `quarter_name` varchar(10),
+  `year_quarter` int(11),
+  `week_of_year` tinyint(4),
+  `year_week` int(11),
+  `weekday` tinyint(4),
+  `weekday_name` enum('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),
+  `weekday_short_name` enum('Sun','Mon','Tue','Wed','Thu','Fri','Sat')
+) ENGINE=MyISAM;
+
+DELIMITER $$
+
+DROP trigger IF EXISTS warehouse.olap_date_table_BEFORE_UPDATE;
+CREATE TRIGGER warehouse.olap_date_table_BEFORE_UPDATE BEFORE UPDATE ON warehouse.olap_date_table FOR EACH ROW
+BEGIN
+    SET NEW.`year` = YEAR(NEW.`date`);
+    SET NEW.month_of_year = MONTH(NEW.`date`);
+    SET NEW.month_short_name = DATE_FORMAT(NEW.`date`,"%b");
+    SET NEW.month_name = DATE_FORMAT(NEW.`date`,"%M");
+    SET NEW.year_month = DATE_FORMAT(NEW.`date`,"%Y%M");
+    SET NEW.day_of_month = DATE_FORMAT(NEW.`date`,"%e");
+    SET NEW.day_of_year = DATE_FORMAT(NEW.`date`,"%j");
+    SET NEW.`quarter` = QUARTER(NEW.`date`);
+    SET NEW.quarter_name = CONCAT("Quarter-", QUARTER(NEW.`date`));
+    SET NEW.year_quarter = CONCAT(LEFT(NEW.date,4), QUARTER(NEW.`date`));
+    SET NEW.week_of_year = DATE_FORMAT(NEW.`date`,"%V");
+    SET NEW.year_week = DATE_FORMAT(NEW.`date`,"%Y%V");
+    SET NEW.weekday = DATE_FORMAT(NEW.`date`,"%w"); 
+    SET NEW.weekday_name = DATE_FORMAT(NEW.`date`,"%W");
+    SET NEW.weekday_short_name = DATE_FORMAT(NEW.`date`,"%a");
+END$$
+
+
+DROP trigger IF EXISTS warehouse.olap_date_table_BEFORE_INSERT;
+CREATE TRIGGER warehouse.olap_date_table_BEFORE_INSERT BEFORE INSERT ON warehouse.olap_date_table FOR EACH ROW
+BEGIN
+    SET NEW.`year` = YEAR(NEW.`date`);
+    SET NEW.month_of_year = MONTH(NEW.`date`);
+    SET NEW.month_short_name = DATE_FORMAT(NEW.`date`,"%b");
+    SET NEW.month_name = DATE_FORMAT(NEW.`date`,"%M");
+    SET NEW.year_month = DATE_FORMAT(NEW.`date`,"%Y%M");
+    SET NEW.day_of_month = DATE_FORMAT(NEW.`date`,"%e");
+    SET NEW.day_of_year = DATE_FORMAT(NEW.`date`,"%j");
+    SET NEW.`quarter` = QUARTER(NEW.`date`);
+    SET NEW.quarter_name = CONCAT("Quarter-", QUARTER(NEW.`date`));
+    SET NEW.year_quarter = CONCAT(LEFT(NEW.date,4), QUARTER(NEW.`date`));
+    SET NEW.week_of_year = DATE_FORMAT(NEW.`date`,"%V");
+    SET NEW.weekday = DATE_FORMAT(NEW.`date`,"%w");
+    SET NEW.year_week = DATE_FORMAT(NEW.`date`,"%Y%V");
+    SET NEW.weekday_name = DATE_FORMAT(NEW.`date`,"%W");
+    SET NEW.weekday_short_name = DATE_FORMAT(NEW.`date`,"%a");
+END$$
+
+DELIMITER ;
+
