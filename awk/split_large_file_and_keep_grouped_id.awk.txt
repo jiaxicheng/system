@@ -1,0 +1,58 @@
+# XiCheng Jia Spring 2019 @ New York
+#
+# awk command lines to split a big CSV file into multiple files containing chucnks of N_lines
+# (1) the order of lines must be reserved
+# (2) lines with the same value in a specified column/field $(fn) must be saved in the same file
+#
+# This is useful when a big CSV is generated containing millions of transactions of deals
+# to split the big file while keeping the transaction of the same deal in the same file
+# is important. so the end user dont have to switch between files to check the same deal.
+#
+# Below lists two different splitting methods to obtain the samilar result:
+
+# Number of lines per split
+N_lines=10000
+
+# the column number to identify group
+fn=2
+
+# Split file based on (NR % N_lines), some files might contain records less than N_lines
+awk -F, -v N_lines=$N_lines -v fn=$fn '
+    # save title line used for heading of each split
+    NR == 1 { title = $0; f = 1; next }
+
+    # set flag f = 1 whenever (NR-1) % N_lines is 0, start checking flag
+    !((NR-1)%N_lines) { f = 1 }
+
+    # only when f ==1 and $(fn) is different from the previous line, reset/close file
+    # reset flag 'f' and print title line to file
+    f && ($(fn) != prev) { close(file); file=FILENAME"."(n++)".csv"; f=0; print title > file }
+
+    # print file content and set up prev = $(fn)
+    { print > file; prev = $(fn) }
+' file.csv
+
+# Recount the line number, so each split should have at least N_lines lines
+# i: line counter, ideally should be from 0 to (N_lines-1), if $(fn) is the same as the last line
+#    continue until ($(fn) != prev)
+# n: file counter, the appended sequence number to the generated filenames
+# fn: field number by which the same value should be kept in the same file
+awk -F, -v N_lines=$N_lines -v fn=$fn '
+    # save title line used for heading of each split
+    NR == 1 { title = $0; f = 1; next }
+
+    # set flag f = 1 whenever i is N_lines, and start checking prev and current $(fn)
+    i++ == N_lines { f = 1 }
+
+    # only when f ==1 and $(fn) is different from the previous line, close and reset file
+    # reset flag 'f', the counter 'i' and print title line to file
+    f && ($(fn) != prev) { 
+        close(file); 
+        file=FILENAME"."(n++)".csv"; 
+        f=0; i=0; 
+        print title > file 
+    }
+
+    # print file content and set up prev = $(fn)
+    { print > file; prev = $(fn) }
+' file.csv
