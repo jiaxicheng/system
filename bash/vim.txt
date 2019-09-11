@@ -1,0 +1,11 @@
+
+
+Execute multiple replacements at once: using '|' to separate commands
+
+    "convert tabular formated lines from df.show() into comma-delimited lines
+    :%s/^ *| *// | %s/ *| *$// | %s/ *| */,/g
+
+
+    "convert comma-delimited lines to list for spark.createDataFrame()
+    :%s/,/', '/g | %s/^/        , ('/ | :%s/$/')/
+
